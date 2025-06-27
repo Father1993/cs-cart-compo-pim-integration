@@ -107,7 +107,7 @@ http://your-domain.com/test_pim_connection.php
 ### Ошибка авторизации
 
 1. Проверьте правильность логина и пароля
-2. Убедитесь, что API доступен: https://pim.uroven.pro/api/v1/
+2. Убедитесь, что API доступен: your_api_url
 3. Проверьте настройки firewall
 
 ### Таймаут при синхронизации
