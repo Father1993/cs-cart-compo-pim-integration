@@ -1,64 +1,145 @@
-# PIM Sync – Integration of Compo PIM with CS-Cart
+# PIM Sync - Интеграция Compo PIM с CS-Cart
 
-## Description
+## Описание
 
-An add-on for automatic synchronization of product catalog from the Compo PIM system into CS-Cart.
+Аддон для автоматической синхронизации каталога товаров из системы Compo PIM в CS-Cart.
 
-## Features
+## Возможности
 
--   ✅ Full synchronization of categories and products
--   ✅ Incremental synchronization of changed products
--   ✅ Automatic image upload
--   ✅ Logging of all operations
--   ✅ Admin panel interface for management
--   ✅ Automatic scheduled synchronization via cron
+-   ✅ Полная синхронизация категорий и товаров
+-   ✅ Инкрементальная синхронизация измененных товаров
+-   ✅ Автоматическая загрузка изображений
+-   ✅ Журналирование всех операций
+-   ✅ Интерфейс управления в админ-панели
+-   ✅ Автоматическая синхронизация по расписанию (cron)
 
-## Installation
+## Установка
 
-### 1. Installation via admin panel
+### 1. Установка через админ-панель
 
-1. Go to the CS-Cart admin panel
-2. Navigate to **Add-ons → Manage add-ons**
-3. Click **+** to upload a new add-on
-4. Upload the archive with the add-on or specify the path to the `app/addons/pim_sync` folder
-5. Find the "Compo PIM Synchronization" module in the list
-6. Click **Install**
+1. Перейдите в админ-панель CS-Cart
+2. Откройте раздел **Модули → Управление модулями**
+3. Нажмите **+** для загрузки нового модуля
+4. Загрузите архив с аддоном или укажите путь к папке `app/addons/pim_sync`
+5. Найдите модуль "Compo PIM Synchronization" в списке
+6. Нажмите **Установить**
 
-### 2. Activation and configuration
+### 2. Активация и настройка
 
-1. After installation, go to the add-on settings
-2. Enter the API connection parameters:
-    - **API URL**: `https://YOUR_API_URL`
-    - **API Login**: login
-    - **API Password**: password
-    - **Catalog UID**: `1111111-2222-3333-4444-55555555555`
-3. Enable automatic synchronization if needed
-4. Save the settings
+1. После установки перейдите в настройки модуля
+2. Укажите параметры подключения к API:
+    - **URL API**: `your_api_url/`
+    - **Логин API**: ваш логин
+    - **Пароль API**: ваш пароль
+    - **UID каталога**: `111111-22222-33333-44444-555555555`
+3. Включите автоматическую синхронизацию если нужно
+4. Сохраните настройки
 
-### 3. First run
+### 3. Первый запуск
 
-1. Go to **Catalog → PIM Synchronization**
-2. Click **Test Connection** to check API availability
-3. Perform a **Full Synchronization** for initial data load
+1. Перейдите в **Каталог → PIM синхронизация**
+2. Нажмите **Проверить подключение** для проверки API
+3. Выполните **Полную синхронизацию** для первичной загрузки данных
 
-## Usage
+## Использование
 
-### Manual synchronization
+### Ручная синхронизация
 
-The admin panel provides the following actions:
+В админ-панели доступны следующие действия:
 
--   **Full Synchronization** – loads all categories and products
--   **Sync Changes** – updates only changed products for the specified period
--   **Test Connection** – checks API accessibility
+-   **Полная синхронизация** - загружает все категории и товары
+-   **Синхронизировать изменения** - обновляет только измененные товары за указанный период
+-   **Проверить подключение** - тестирует доступность API
 
-### Automatic synchronization
+### Автоматическая синхронизация
 
-To enable automatic synchronization, add to `crontab`:
+Для настройки автоматической синхронизации добавьте в crontab:
 
 ```bash
-# Incremental synchronization every 30 minutes
+# Инкрементальная синхронизация каждые 30 минут
 0,30 * * * * php /path/to/cscart/app/addons/pim_sync/cron/sync.php
 
-# Full synchronization once a week (Sunday at 3:00 AM)
+# Полная синхронизация раз в неделю (воскресенье в 3:00)
 0 3 * * 0 php /path/to/cscart/app/addons/pim_sync/cron/sync.php --full
 ```
+
+Параметры cron-скрипта:
+
+-   `--full` - выполнить полную синхронизацию
+-   `--days=N` - синхронизировать товары за N дней (по умолчанию 1)
+
+### Тестирование API
+
+Для проверки работы API используйте тестовый скрипт:
+
+```bash
+# Скопируйте в корень CS-Cart
+cp test_pim_connection.php /path/to/cscart/
+
+# Откройте в браузере
+http://your-domain.com/test_pim_connection.php
+```
+
+## Мониторинг
+
+### Журнал синхронизации
+
+Все операции записываются в:
+
+-   База данных: таблица `cscart_pim_sync_log`
+-   Файл: `var/pim_sync.log`
+
+### Статистика
+
+В интерфейсе управления отображается:
+
+-   Количество синхронизированных категорий и товаров
+-   Количество ошибок
+-   Время последней синхронизации
+-   Статус текущей операции
+
+## Решение проблем
+
+### Ошибка авторизации
+
+1. Проверьте правильность логина и пароля
+2. Убедитесь, что API доступен: your_website_url
+3. Проверьте настройки firewall
+
+### Таймаут при синхронизации
+
+1. Увеличьте лимиты PHP:
+    ```
+    max_execution_time = 0
+    memory_limit = 512M
+    ```
+2. Используйте cron для больших объемов данных
+
+### Изображения не загружаются
+
+1. Проверьте права на запись в папку `images/`
+2. Убедитесь, что URL изображений доступны
+3. Проверьте свободное место на диске
+
+## Структура данных
+
+### Маппинг полей
+
+См. документацию: `/docs/integration/data-mapping.md`
+
+### Таблицы БД
+
+-   `cscart_pim_sync_state` - состояние синхронизации сущностей
+-   `cscart_pim_sync_log` - журнал операций
+
+## Поддержка
+
+При возникновении проблем:
+
+1. Проверьте логи в `var/pim_sync.log`
+2. Изучите документацию в `/docs/integration/`
+3. Обратитесь к администратору системы
+
+### Автор
+
+Andrej Spinej
