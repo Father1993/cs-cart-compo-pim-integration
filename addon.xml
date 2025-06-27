@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<addon scheme="3.0">
+    <id>pim_sync</id>
+    <version>1.0.0</version>
+    <priority>100</priority>
+    <status>active</status>
+    <name>Compo PIM Synchronization</name>
+    <description>Синхронизация каталога товаров с Compo PIM</description>
+    <default_language>ru</default_language>
+    <supplier>Andrej Spinej</supplier>
+    <supplier_link>https://uroven.pro</supplier_link>
+    
+    <settings>
+        <sections>
+            <section id="general">
+                <name>Основные настройки</name>
+                <items>
+                    <item id="api_url">
+                        <name>URL API</name>
+                        <type>input</type>
+                        <default_value>https://pim.uroven.pro/api/v1/</default_value>
+                    </item>
+                    <item id="api_login">
+                        <name>Логин API</name>
+                        <type>input</type>
+                        <default_value>s.andrey</default_value>
+                    </item>
+                    <item id="api_password">
+                        <name>Пароль API</name>
+                        <type>password</type>
+                        <default_value>KZh-4g2-YFx-Jgm</default_value>
+                    </item>
+                    <item id="catalog_uid">
+                        <name>UID каталога</name>
+                        <type>input</type>
+                        <default_value>9db1eab4-c492-4ba1-b2e3-2001bff89038</default_value>
+                    </item>
+                    <item id="sync_enabled">
+                        <name>Включить автоматическую синхронизацию</name>
+                        <type>checkbox</type>
+                        <default_value>N</default_value>
+                    </item>
+                    <item id="sync_interval">
+                        <name>Интервал синхронизации (минуты)</name>
+                        <type>input</type>
+                        <default_value>30</default_value>
+                    </item>
+                </items>
+            </section>
+        </sections>
+    </settings>
+    
+    <queries>
+        <item for="install">
+            CREATE TABLE IF NOT EXISTS `?:pim_sync_state` (
+                `sync_id` int(11) NOT NULL AUTO_INCREMENT,
+                `entity_type` varchar(50) NOT NULL,
+                `entity_uid` varchar(255) NOT NULL,
+                `cs_cart_id` int(11) DEFAULT NULL,
+                `last_sync` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                `sync_status` enum('synced','pending','error') DEFAULT 'pending',
+                `error_message` text,
+                PRIMARY KEY (`sync_id`),
+                UNIQUE KEY `entity_uid` (`entity_type`,`entity_uid`),
+                KEY `cs_cart_id` (`cs_cart_id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+            
+            CREATE TABLE IF NOT EXISTS `?:pim_sync_log` (
+                `log_id` int(11) NOT NULL AUTO_INCREMENT,
+                `sync_type` enum('full','delta','manual') NOT NULL,
+                `started_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                `completed_at` timestamp NULL DEFAULT NULL,
+                `status` enum('running','completed','failed') DEFAULT 'running',
+                `affected_categories` int(11) DEFAULT '0',
+                `affected_products` int(11) DEFAULT '0',
+                `error_details` text,
+                PRIMARY KEY (`log_id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+        </item>
+        <item for="uninstall">
+            DROP TABLE IF EXISTS `?:pim_sync_state`;
+            DROP TABLE IF EXISTS `?:pim_sync_log`;
+        </item>
+    </queries>
+</addon> 

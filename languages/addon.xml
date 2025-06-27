@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<addon scheme="1.0">
+    <language_variables>
+        <item id="addon_name" lang="ru">Синхронизация с Compo PIM</item>
+        <item id="addon_description" lang="ru">Автоматическая синхронизация каталога товаров с системой Compo PIM</item>
+        
+        <!-- Настройки -->
+        <item id="api_url" lang="ru">URL API</item>
+        <item id="api_login" lang="ru">Логин API</item>
+        <item id="api_password" lang="ru">Пароль API</item>
+        <item id="catalog_uid" lang="ru">UID каталога</item>
+        <item id="sync_enabled" lang="ru">Включить автоматическую синхронизацию</item>
+        <item id="sync_interval" lang="ru">Интервал синхронизации (минуты)</item>
+        
+        <!-- Меню и заголовки -->
+        <item id="pim_sync" lang="ru">PIM синхронизация</item>
+        <item id="pim_sync.manage" lang="ru">Управление синхронизацией</item>
+        <item id="pim_sync.sync_logs" lang="ru">Журнал синхронизации</item>
+        <item id="pim_sync.statistics" lang="ru">Статистика</item>
+        <item id="pim_sync.sync_status" lang="ru">Статус синхронизации</item>
+        
+        <!-- Кнопки и действия -->
+        <item id="pim_sync.run_full_sync" lang="ru">Полная синхронизация</item>
+        <item id="pim_sync.run_delta_sync" lang="ru">Синхронизировать изменения</item>
+        <item id="pim_sync.test_connection" lang="ru">Проверить подключение</item>
+        <item id="pim_sync.clear_logs" lang="ru">Очистить логи</item>
+        <item id="pim_sync.view_details" lang="ru">Подробнее</item>
+        
+        <!-- Статусы -->
+        <item id="pim_sync.status_running" lang="ru">Выполняется</item>
+        <item id="pim_sync.status_completed" lang="ru">Завершена</item>
+        <item id="pim_sync.status_failed" lang="ru">Ошибка</item>
+        <item id="pim_sync.status_synced" lang="ru">Синхронизировано</item>
+        <item id="pim_sync.status_pending" lang="ru">Ожидает</item>
+        <item id="pim_sync.status_error" lang="ru">Ошибка</item>
+        
+        <!-- Типы синхронизации -->
+        <item id="pim_sync.sync_type_full" lang="ru">Полная</item>
+        <item id="pim_sync.sync_type_delta" lang="ru">Инкрементальная</item>
+        <item id="pim_sync.sync_type_manual" lang="ru">Ручная</item>
+        
+        <!-- Статистика -->
+        <item id="pim_sync.total_categories" lang="ru">Всего категорий</item>
+        <item id="pim_sync.total_products" lang="ru">Всего товаров</item>
+        <item id="pim_sync.pending_sync" lang="ru">Ожидает синхронизации</item>
+        <item id="pim_sync.sync_errors" lang="ru">Ошибки синхронизации</item>
+        <item id="pim_sync.last_sync" lang="ru">Последняя синхронизация</item>
+        <item id="pim_sync.never" lang="ru">Никогда</item>
+        
+        <!-- Журнал -->
+        <item id="pim_sync.log_id" lang="ru">ID</item>
+        <item id="pim_sync.sync_type" lang="ru">Тип</item>
+        <item id="pim_sync.started_at" lang="ru">Начало</item>
+        <item id="pim_sync.completed_at" lang="ru">Завершение</item>
+        <item id="pim_sync.duration" lang="ru">Длительность</item>
+        <item id="pim_sync.affected_categories" lang="ru">Категорий</item>
+        <item id="pim_sync.affected_products" lang="ru">Товаров</item>
+        <item id="pim_sync.status" lang="ru">Статус</item>
+        <item id="pim_sync.error_details" lang="ru">Детали ошибки</item>
+        
+        <!-- Сообщения -->
+        <item id="pim_sync.full_sync_completed" lang="ru">Полная синхронизация завершена. Категорий: [categories], Товаров: [products]</item>
+        <item id="pim_sync.delta_sync_completed" lang="ru">Синхронизация изменений завершена. Обновлено товаров: [products]</item>
+        <item id="pim_sync.sync_failed" lang="ru">Синхронизация завершилась с ошибкой</item>
+        <item id="pim_sync.connection_successful" lang="ru">Подключение к PIM API успешно установлено</item>
+        <item id="pim_sync.connection_failed" lang="ru">Не удалось подключиться к PIM API</item>
+        <item id="pim_sync.logs_cleared" lang="ru">Старые записи журнала удалены</item>
+        <item id="pim_sync.sync_in_progress" lang="ru">Синхронизация уже выполняется</item>
+        
+        <!-- Подсказки -->
+        <item id="pim_sync.full_sync_hint" lang="ru">Полная синхронизация загрузит все категории и товары из PIM. Это может занять продолжительное время.</item>
+        <item id="pim_sync.delta_sync_hint" lang="ru">Будут синхронизированы только товары, измененные за указанный период.</item>
+        <item id="pim_sync.days_hint" lang="ru">Количество дней для проверки изменений</item>
+        
+        <!-- Ошибки -->
+        <item id="pim_sync.error_no_settings" lang="ru">Не настроены параметры подключения к PIM</item>
+        <item id="pim_sync.error_api_unavailable" lang="ru">PIM API недоступен</item>
+        <item id="pim_sync.error_invalid_credentials" lang="ru">Неверные учетные данные для доступа к API</item>
+    </language_variables>
+</addon> 
