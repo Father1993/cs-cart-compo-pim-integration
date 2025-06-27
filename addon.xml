@@ -8,7 +8,7 @@
     <description>Синхронизация каталога товаров с Compo PIM</description>
     <default_language>ru</default_language>
     <supplier>Andrej Spinej</supplier>
-    <supplier_link>You-website</supplier_link>
+    <supplier_link>website_url</supplier_link>
     
     <settings>
         <sections>
@@ -18,22 +18,22 @@
                     <item id="api_url">
                         <name>URL API</name>
                         <type>input</type>
-                        <default_value>you-api-url</default_value>
+                        <default_value>you-api-ur</default_value>
                     </item>
                     <item id="api_login">
                         <name>Логин API</name>
                         <type>input</type>
-                        <default_value>your-login</default_value>
+                        <default_value>your_login</default_value>
                     </item>
                     <item id="api_password">
                         <name>Пароль API</name>
                         <type>password</type>
-                        <default_value>your-password</default_value>
+                        <default_value>your_password</default_value>
                     </item>
                     <item id="catalog_uid">
                         <name>UID каталога</name>
                         <type>input</type>
-                        <default_value>you-catalog-uuid</default_value>
+                        <default_value>your_password_uuid_catalog</default_value>
                     </item>
                     <item id="sync_enabled">
                         <name>Включить автоматическую синхронизацию</name>

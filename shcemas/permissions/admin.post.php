@@ -1,10 +1,10 @@
 <?php
 /**
- * @file: admin.post.php
- * @description: Схема пар доступа для контроллера
- * @dependencies: CS-Cart permissions system
- * @created: 2025-06-27
- */
+* @file: admin.post.php
+* @description: Permissions scheme for pim_sync controller
+* @dependencies: CS-Cart permissions system
+* @created: 2025-06-27
+*/
 
 if (!defined('BOOTSTRAP')) { die('Access denied'); }
 
