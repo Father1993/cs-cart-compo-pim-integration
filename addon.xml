@@ -8,7 +8,7 @@
     <description>Синхронизация каталога товаров с Compo PIM</description>
     <default_language>ru</default_language>
     <supplier>Andrej Spinej</supplier>
-    <supplier_link>https://uroven.pro</supplier_link>
+    <supplier_link>You-website</supplier_link>
     
     <settings>
         <sections>
@@ -18,22 +18,22 @@
                     <item id="api_url">
                         <name>URL API</name>
                         <type>input</type>
-                        <default_value>https://pim.uroven.pro/api/v1/</default_value>
+                        <default_value>you-api-url</default_value>
                     </item>
                     <item id="api_login">
                         <name>Логин API</name>
                         <type>input</type>
-                        <default_value>s.andrey</default_value>
+                        <default_value>your-login</default_value>
                     </item>
                     <item id="api_password">
                         <name>Пароль API</name>
                         <type>password</type>
-                        <default_value>KZh-4g2-YFx-Jgm</default_value>
+                        <default_value>your-password</default_value>
                     </item>
                     <item id="catalog_uid">
                         <name>UID каталога</name>
                         <type>input</type>
-                        <default_value>9db1eab4-c492-4ba1-b2e3-2001bff89038</default_value>
+                        <default_value>you-catalog-uuid</default_value>
                     </item>
                     <item id="sync_enabled">
                         <name>Включить автоматическую синхронизацию</name>
