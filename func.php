@@ -1,10 +1,11 @@
 <?php
 /**
- * @file: func.php
- * @description: Main features of PIM Sync addon
- * @dependencies: CS-Cart core
- * @created: 2025-06-27
- */
+* @file: func.php
+* @description: Main features of PIM Sync addon
+* @dependencies: CS-Cart core
+* @created: 2025-06-27
+*/
+
 if (!defined('BOOTSTRAP')) { die('Access denied'); }
 
 use Tygh\Registry;
@@ -29,7 +30,7 @@ function fn_pim_sync_get_settings()
 }
 
 /**
-* Logging synchronization operations
+* Logging of synchronization operations
 * @param string $message
 * @param string $level
 */
@@ -71,7 +72,7 @@ function fn_pim_sync_update_log_entry($log_id, $data)
 }
 
 /**
-* Get or create a PIM UID link to a CS-Cart ID
+* Get or create a link between PIM UID and CS-Cart ID
 * @param string $entity_type
 * @param string $entity_uid
 * @return int|false
@@ -82,11 +83,12 @@ function fn_pim_sync_get_cs_cart_id($entity_type, $entity_uid)
         'SELECT cs_cart_id FROM ?:pim_sync_state WHERE entity_type = ?s AND entity_uid = ?s',
         $entity_type, $entity_uid
     );
+    
     return $cs_cart_id ?: false;
 }
 
 /**
-* Save PIM UID association with CS-Cart ID
+* Keep PIM UID linked to CS-Cart ID
 * @param string $entity_type
 * @param string $entity_uid
 * @param int $cs_cart_id
@@ -139,8 +141,10 @@ function fn_pim_sync_full()
             'affected_categories' => $result['categories_synced'],
             'affected_products' => $result['products_synced']
         ]);
+        
         $result['success'] = true;
         fn_pim_sync_log("Полная синхронизация завершена. Категорий: {$result['categories_synced']}, Товаров: {$result['products_synced']}");
+        
     } catch (Exception $e) {
         $result['errors'][] = $e->getMessage();
         fn_pim_sync_log('Ошибка при полной синхронизации: ' . $e->getMessage(), 'error');
@@ -188,10 +192,10 @@ function fn_pim_sync_delta($days = 1)
         ]);
         $result['success'] = true;
         fn_pim_sync_log("Инкрементальная синхронизация завершена. Обновлено товаров: {$result['products_updated']}");
+        
     } catch (Exception $e) {
         $result['errors'][] = $e->getMessage();
         fn_pim_sync_log('Ошибка при инкрементальной синхронизации: ' . $e->getMessage(), 'error');
-        
         if (isset($log_id)) {
             fn_pim_sync_update_log_entry($log_id, [
                 'completed_at' => date('Y-m-d H:i:s'),
@@ -200,6 +204,7 @@ function fn_pim_sync_delta($days = 1)
             ]);
         }
     }
+    
     return $result;
 }
 
@@ -217,9 +222,9 @@ function fn_pim_sync_get_log_entries($limit = 10)
 }
 
 /**
- * Cleanup logs
- * @param int $days_to_keep
- */
+* Clear old log entries
+* @param int $days_to_keep
+*/
 function fn_pim_sync_cleanup_logs($days_to_keep = 30)
 {
     $date_threshold = date('Y-m-d H:i:s', strtotime("-$days_to_keep days"));
@@ -227,4 +232,79 @@ function fn_pim_sync_cleanup_logs($days_to_keep = 30)
         'DELETE FROM ?:pim_sync_log WHERE completed_at < ?s AND status != ?s',
         $date_threshold, 'running'
     );
+}
+
+/**
+* Hook: After product update
+* @param array $product_data
+* @param int $product_id
+* @param string $lang_code
+* @param bool $create
+*/
+function fn_pim_sync_update_product_post($product_data, $product_id, $lang_code, $create)
+{
+    // Для будущей реализации двусторонней синхронизации
+}
+
+/**
+* Hook: After item is removed
+* @param int $product_id
+*/
+function fn_pim_sync_delete_product_post($product_id)
+{
+    // Удаляем связь при удалении товара
+    db_query("DELETE FROM ?:pim_sync_state WHERE entity_type = 'product' AND cs_cart_id = ?i", $product_id);
+}
+
+/**
+* Hook: After category update
+* @param array $category_data
+* @param int $category_id
+* @param string $lang_code
+*/
+function fn_pim_sync_update_category_post($category_data, $category_id, $lang_code)
+{
+    // Для будущей реализации двусторонней синхронизации
+}
+
+/**
+* Hook: After category deletion
+* @param int $category_id
+*/
+function fn_pim_sync_delete_category_post($category_id)
+{
+    // Удаляем связь при удалении категории
+    db_query("DELETE FROM ?:pim_sync_state WHERE entity_type = 'category' AND cs_cart_id = ?i", $category_id);
+}
+
+/**
+* Hook: When receiving goods
+* @param array $params
+* @param array $fields
+* @param array $sortings
+* @param string $condition
+* @param string $join
+* @param string $sorting
+* @param string $group_by
+* @param string $lang_code
+* @param array $having
+*/
+function fn_pim_sync_get_products(&$params, &$fields, &$sortings, &$condition, &$join, &$sorting, &$group_by, &$lang_code, &$having)
+{
+    // Можно добавить дополнительные поля из PIM при необходимости
+}
+
+/**
+* Hook: When receiving categories
+* @param array $params
+* @param string $join
+* @param string $condition
+* @param array $fields
+* @param string $group_by
+* @param array $sortings
+* @param string $lang_code
+*/
+function fn_pim_sync_get_categories(&$params, &$join, &$condition, &$fields, &$group_by, &$sortings, &$lang_code)
+{
+    // Можно добавить дополнительные поля из PIM при необходимости
 } 

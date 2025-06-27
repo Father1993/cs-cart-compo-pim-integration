@@ -1,10 +1,10 @@
 <?php
 /**
- * @file: admin.post.php
- * @description: Схема меню админ-панели
- * @dependencies: CS-Cart menu system
- * @created: 2025-06-27
- */
+* @file: admin.post.php
+* @description: Admin menu
+* @dependencies: CS-Cart menu system
+* @created: 2025-06-27
+*/
 
 if (!defined('BOOTSTRAP')) { die('Access denied'); }
 
