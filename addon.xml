@@ -8,7 +8,7 @@
     <description>Синхронизация каталога товаров с Compo PIM</description>
     <default_language>ru</default_language>
     <supplier>Andrej Spinej</supplier>
-    <supplier_link>https://uroven.pro</supplier_link>
+    <supplier_link>You-website</supplier_link>
     
     <settings>
         <sections>
