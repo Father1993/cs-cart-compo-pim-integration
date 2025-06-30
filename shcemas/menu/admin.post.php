@@ -10,7 +10,6 @@
 if (! defined('BOOTSTRAP')) {
     die('Access denied');
 }
-
 $schema['top']['catalog']['items']['pim_sync'] = [
     'title' => 'pim_sync',
     'href' => 'pim_sync.manage',

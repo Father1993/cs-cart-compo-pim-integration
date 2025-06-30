@@ -250,7 +250,7 @@ function fn_pim_sync_cleanup_logs($days_to_keep = 30): void
 */
 function fn_pim_sync_update_product_post($product_data, $product_id, $lang_code, $create): void
 {
-    // Для будущей реализации двусторонней синхронизации
+    // For future implementation of two-way synchronization
 }
 
 /**
@@ -259,7 +259,7 @@ function fn_pim_sync_update_product_post($product_data, $product_id, $lang_code,
 */
 function fn_pim_sync_delete_product_post($product_id): void
 {
-    // Удаляем связь при удалении товара
+    // Removing the link when deleting the product
     db_query("DELETE FROM ?:pim_sync_state WHERE entity_type = 'product' AND cs_cart_id = ?i", $product_id);
 }
 
@@ -271,7 +271,7 @@ function fn_pim_sync_delete_product_post($product_id): void
 */
 function fn_pim_sync_update_category_post($category_data, $category_id, $lang_code): void
 {
-    // Для будущей реализации двусторонней синхронизации
+    // For future implementation of two-way synchronization
 }
 
 /**
@@ -280,7 +280,7 @@ function fn_pim_sync_update_category_post($category_data, $category_id, $lang_co
 */
 function fn_pim_sync_delete_category_post($category_id): void
 {
-    // Удаляем связь при удалении категории
+    // Removing a link when deleting a category
     db_query("DELETE FROM ?:pim_sync_state WHERE entity_type = 'category' AND cs_cart_id = ?i", $category_id);
 }
 
@@ -298,7 +298,7 @@ function fn_pim_sync_delete_category_post($category_id): void
 */
 function fn_pim_sync_get_products(&$params, &$fields, &$sortings, &$condition, &$join, &$sorting, &$group_by, &$lang_code, &$having): void
 {
-    // Можно добавить дополнительные поля из PIM при необходимости
+    // Additional fields from PIM can be added if needed.
 }
 
 /**
@@ -313,5 +313,5 @@ function fn_pim_sync_get_products(&$params, &$fields, &$sortings, &$condition, &
 */
 function fn_pim_sync_get_categories(&$params, &$join, &$condition, &$fields, &$group_by, &$sortings, &$lang_code): void
 {
-    // Можно добавить дополнительные поля из PIM при необходимости
+    // Additional fields from PIM can be added if needed.
 }

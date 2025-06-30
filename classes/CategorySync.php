@@ -18,7 +18,7 @@ class CategorySync
     private int $synced_count = 0;
 
     /**
-     * Constructor
+    * Constructor
     * @param PimApiClient $api_client
     */
     public function __construct(PimApiClient $api_client)
@@ -47,7 +47,6 @@ class CategorySync
             $categories = array_filter($response['data'], function ($category) use ($catalog_uid) {
                 return isset($category['catalogs']) && in_array($catalog_uid, $category['catalogs']);
             });
-
             fn_pim_sync_log("Найдено категорий для синхронизации: " . count($categories));
             foreach ($categories as $category) {
                 $this->categories_map[$category['syncUid']] = $category;
