@@ -1,4 +1,5 @@
 <?php
+
 /**
 * @file: PimApiClient.php
 * @description: Client for working with Compo PIM API
@@ -7,16 +8,17 @@
 */
 
 namespace Tygh\Addons\PimSync;
+
 use Exception;
 
 class PimApiClient
 {
-    private $api_url;
-    private $token;
-    private $token_expires;
-    private $login;
-    private $password;
-    
+    private string $api_url;
+    private ?string $token = null;
+    private int $token_expires = 0;
+    private string $login;
+    private string $password;
+
     /**
     * Constructor
     * @param string $api_url
@@ -30,18 +32,18 @@ class PimApiClient
         $this->password = $password;
         $this->authenticate();
     }
-    
+
     /**
     * Authorization and receiving a token
     * @throws Exception
     */
-    private function authenticate()
+    private function authenticate(): void
     {
         try {
             $response = $this->makeRequest('/sign-in/', 'POST', [
                 'login' => $this->login,
                 'password' => $this->password,
-                'remember' => true
+                'remember' => true,
             ], false);
             if ($response && isset($response['success']) && $response['success'] === true) {
                 $this->token = $response['data']['access']['token'];
@@ -53,10 +55,11 @@ class PimApiClient
             }
         } catch (Exception $e) {
             fn_pim_sync_log('Ошибка авторизации в PIM API: ' . $e->getMessage(), 'error');
+
             throw $e;
         }
     }
-    
+
     /**
     * Make a request to the API
     * @param string $endpoint
@@ -97,6 +100,10 @@ class PimApiClient
         if ($response === false) {
             throw new Exception('CURL error: ' . $curl_error);
         }
+        // Добавить проверку типа
+        if (! is_string($response)) {
+            throw new Exception('Invalid response type');
+        }
         $decoded = json_decode($response, true);
         if ($http_code !== 200) {
             throw new Exception('API error: HTTP ' . $http_code . ' - ' . $response);
@@ -104,9 +111,10 @@ class PimApiClient
         if (json_last_error() !== JSON_ERROR_NONE) {
             throw new Exception('JSON decode error: ' . json_last_error_msg());
         }
+
         return $decoded;
     }
-    
+
     /**
     * Get information about the catalog
     * @param string $catalog_uid
@@ -116,9 +124,10 @@ class PimApiClient
     public function getCatalog($catalog_uid)
     {
         fn_pim_sync_log("Получаем информацию о каталоге: $catalog_uid");
+
         return $this->makeRequest('/catalog/' . $catalog_uid);
     }
-    
+
     /**
     * Get the full category tree
     * @return array
@@ -127,9 +136,10 @@ class PimApiClient
     public function getCatalogTree()
     {
         fn_pim_sync_log("Получаем дерево категорий");
+
         return $this->makeRequest('/catalog');
     }
-    
+
     /**
     * Get products via scroll API
     * @param string|null $scroll_id
@@ -144,22 +154,23 @@ class PimApiClient
         if ($scroll_id) {
             $query_params['scrollId'] = $scroll_id;
         }
-        if (!empty($params['catalogId'])) {
+        if (! empty($params['catalogId'])) {
             $query_params['catalogId'] = $params['catalogId'];
         }
-        if (!empty($params['day'])) {
+        if (! empty($params['day'])) {
             $query_params['day'] = $params['day'];
         }
-        if (!empty($params['manufacturerId'])) {
+        if (! empty($params['manufacturerId'])) {
             $query_params['manufacturerId'] = $params['manufacturerId'];
         }
-        if (!empty($query_params)) {
+        if (! empty($query_params)) {
             $endpoint .= '?' . http_build_query($query_params);
         }
         fn_pim_sync_log("Получаем товары через scroll API: $endpoint");
+
         return $this->makeRequest($endpoint);
     }
-    
+
     /**
     * Get product information by ID
     * @param string $product_id
@@ -169,9 +180,10 @@ class PimApiClient
     public function getProduct($product_id)
     {
         fn_pim_sync_log("Получаем информацию о товаре: $product_id");
+
         return $this->makeRequest('/product/' . $product_id);
     }
-    
+
     /**
     * Get product information by UID
     * @param string $product_uid
@@ -181,9 +193,10 @@ class PimApiClient
     public function getProductByUid($product_uid)
     {
         fn_pim_sync_log("Получаем информацию о товаре по UID: $product_uid");
+
         return $this->makeRequest('/product/uid/' . $product_uid);
     }
-    
+
     /**
     * Get information about the characteristic
     * @param string $feature_id
@@ -193,9 +206,10 @@ class PimApiClient
     public function getFeature($feature_id)
     {
         fn_pim_sync_log("Получаем информацию о характеристике: $feature_id");
+
         return $this->makeRequest('/feature/' . $feature_id);
     }
-    
+
     /**
     * Get characteristic information by UID
     * @param string $feature_uid
@@ -205,9 +219,10 @@ class PimApiClient
     public function getFeatureByUid($feature_uid)
     {
         fn_pim_sync_log("Получаем информацию о характеристике по UID: $feature_uid");
+
         return $this->makeRequest('/feature/uid/' . $feature_uid);
     }
-    
+
     /**
     * Get the value of the characteristic
     * @param string $value_id
@@ -218,7 +233,7 @@ class PimApiClient
     {
         return $this->makeRequest('/feature-value/' . $value_id);
     }
-    
+
     /**
     * Get unit of measurement
     * @param string $unit_id
@@ -229,7 +244,7 @@ class PimApiClient
     {
         return $this->makeRequest('/unit/' . $unit_id);
     }
-    
+
     /**
     * Get a group of characteristics
     * @param string $group_id
@@ -240,7 +255,7 @@ class PimApiClient
     {
         return $this->makeRequest('/feature-group/' . $group_id);
     }
-    
+
     /**
     * Save images
     * @param string $image_name
@@ -268,16 +283,17 @@ class PimApiClient
             throw new Exception('Failed to download image: HTTP ' . $http_code);
         }
         $dir = dirname($save_path);
-        if (!is_dir($dir)) {
+        if (! is_dir($dir)) {
             mkdir($dir, 0777, true);
         }
         $result = file_put_contents($save_path, $image_data);
         if ($result === false) {
             throw new Exception('Failed to save image to: ' . $save_path);
         }
+
         return true;
     }
-    
+
     /**
     * Check API connection
     * @return bool
@@ -286,9 +302,10 @@ class PimApiClient
     {
         try {
             $this->authenticate();
+
             return true;
         } catch (Exception $e) {
             return false;
         }
     }
-} 
+}

@@ -1,2 +1,25 @@
 /CommitPilot
 /.commits
+
+# Development tools
+/vendor/
+composer.lock
+.phpunit.cache/
+coverage/
+.php-cs-fixer.cache
+.env.testing
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+*.log
