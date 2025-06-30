@@ -10,7 +10,6 @@
 if (! defined('BOOTSTRAP')) {
     die('Access denied');
 }
-
 $schema['pim_sync'] = [
     'permissions' => ['GET_ORDERS', 'MANAGE_ORDERS'],
     'modes' => [
