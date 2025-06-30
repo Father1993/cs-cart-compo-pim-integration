@@ -1,4 +1,5 @@
 <?php
+
 /**
 * @file: admin.post.php
 * @description: Admin menu
@@ -6,12 +7,14 @@
 * @created: 2025-06-27
 */
 
-if (!defined('BOOTSTRAP')) { die('Access denied'); }
+if (! defined('BOOTSTRAP')) {
+    die('Access denied');
+}
 
 $schema['top']['catalog']['items']['pim_sync'] = [
     'title' => 'pim_sync',
     'href' => 'pim_sync.manage',
-    'position' => 500
+    'position' => 500,
 ];
 
-return $schema; 
+return $schema;
